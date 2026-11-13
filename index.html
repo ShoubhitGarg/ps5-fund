@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#FAF6F0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="PS5 Fund" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>GTA VI – ₹50,000 PS5 Challenge</title>
+
+  <!-- Google Fonts: Fraunces (Cozy Editorial Serif) & Plus Jakarta Sans (Clean Rounded UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js for Cumulative Growth Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Cozy App Icon (Favicon, Apple Touch Icon & Standalone PWA Manifest Data URIs) -->
+  <link id="appFavicon" rel="icon" type="image/png" href="" />
+  <link id="appAppleIcon" rel="apple-touch-icon" sizes="180x180" href="" />
+  <link id="appManifest" rel="manifest" href="" />
+
+  <script>
+    // Dynamically render a high-res cozy terracotta, cream & sage gamepad PNG icon + PWA manifest
+    (function setupCozyAppIconAndManifest() {
+      function renderCozyIconDataURL(size) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Warm Terracotta Background with Subtle Gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, size, size);
+        bgGrad.addColorStop(0, '#D4875E');
+        bgGrad.addColorStop(1, '#B86942');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, size, size);
+
+        // 2. Soft Cream Inner Card Border
+        const pad = size * 0.08;
+        const innerSize = size - pad * 2;
+        const radius = size * 0.22;
+        ctx.strokeStyle = 'rgba(255, 253, 249, 0.28)';
+        ctx.lineWidth = Math.max(2, size * 0.015);
+        ctx.beginPath();
+        ctx.roundRect(pad, pad, innerSize, innerSize, radius);
+        ctx.stroke();
+
+        // 3. Cozy Cream Gamepad Silhouette
+        ctx.fillStyle = '#FFFDF9';
+        ctx.shadowColor = 'rgba(62, 47, 38, 0.22)';
+        ctx.shadowBlur = size * 0.06;
+        ctx.shadowOffsetY = size * 0.025;
+
+        const cx = size * 0.5;
+        const cy = size * 0.51;
+        const bodyW = size * 0.56;
+        const bodyH = size * 0.30;
+
+        // Left & Right Grips
+        ctx.beginPath();
+        ctx.ellipse(cx - bodyW * 0.34, cy + bodyH * 0.26, size * 0.085, size * 0.145, -0.32, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(cx + bodyW * 0.34, cy + bodyH * 0.26, size * 0.085, size * 0.145, 0.32, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Main Controller Body
+        ctx.beginPath();
+        ctx.roundRect(cx - bodyW / 2, cy - bodyH / 2, bodyW, bodyH, bodyH * 0.48);
+        ctx.fill();
+
+        // Reset shadow for crisp controller details
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        // 4. Espresso D-Pad (Left Side)
+        ctx.fillStyle = '#3E2F26';
+        const dpadX = cx - bodyW * 0.25;
+        const dpadY = cy - bodyH * 0.03;
+        const armLen = size * 0.095;
+        const armThick = size * 0.032;
+        ctx.beginPath();
+        ctx.roundRect(dpadX - armLen / 2, dpadY - armThick / 2, armLen, armThick, armThick * 0.3);
+        ctx.roundRect(dpadX - armThick / 2, dpadY - armLen / 2, armThick, armLen, armThick * 0.3);
+        ctx.fill();
+
+        // 5. Sage Green & Terracotta Action Buttons (Right Side)
+        const btnCenterX = cx + bodyW * 0.25;
+        const btnCenterY = cy - bodyH * 0.03;
+        const btnOffset = size * 0.036;
+        const btnR = size * 0.019;
+
+        // Top & Bottom (Sage Green)
+        ctx.fillStyle = '#7B9E78';
+        ctx.beginPath();
+        ctx.arc(btnCenterX, btnCenterY - btnOffset, btnR, 0, Math.PI * 2);
+        ctx.arc(btnCenterX, btnCenterY + btnOffset, btnR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Left & Right (Warm Terracotta)
+        ctx.fillStyle = '#C87D55';
+        ctx.beginPath();
+        ctx.arc(btnCenterX - btnOffset, btnCenterY, btnR, 0, Math.PI * 2);
+        ctx.arc(btnCenterX + btnOffset, btnCenterY, btnR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 6. Top Center Sage Sprout Leaf Accent
+        ctx.fillStyle = '#EAF1E9';
+        ctx.beginPath();
+        ctx.ellipse(cx - size * 0.022, cy - bodyH * 0.72, size * 0.032, size * 0.016, -0.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#9BC298';
+        ctx.beginPath();
+        ctx.ellipse(cx + size * 0.024, cy - bodyH * 0.75, size * 0.036, size * 0.017, 0.45, 0, Math.PI * 2);
+        ctx.fill();
+
+        return canvas.toDataURL('image/png');
+      }
+
+      try {
+        const icon180 = renderCozyIconDataURL(180);
+        const icon512 = renderCozyIconDataURL(512);
+        window.__COZY_APP_ICON_URL__ = icon180;
+
+        document.getElementById('appFavicon').href = icon180;
+        document.getElementById('appAppleIcon').href = icon180;
+
+        const manifest = {
+          name: 'GTA VI – ₹50,000 PS5 Challenge',
+          short_name: 'PS5 Fund',
+          description: 'Cozy discipline tracker for your ₹50,000 PS5 savings mission.',
+          start_url: './',
+          display: 'standalone',
+          background_color: '#FAF6F0',
+          theme_color: '#FAF6F0',
+          icons: [
+            { src: icon180, sizes: '180x180', type: 'image/png', purpose: 'any maskable' },
+            { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          ]
+        };
+
+        const manifestDataURI = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+        document.getElementById('appManifest').href = manifestDataURI;
+      } catch (err) {
+        console.warn('Could not initialize dynamic app icon:', err);
+      }
+    })();
+  </script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: '#FAF6F0',
+            oatmeal: '#FFFDF9',
+            linen: '#F3ECE1',
+            espresso: '#3E2F26',
+            mocha: '#7A685D',
+            terracotta: '#C87D55',
+            terracottaDark: '#B36841',
+            sage: '#7B9E78',
+            sageSoft: '#EAF1E9',
+            sandBorder: '#E6DDD0'
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+          },
+          boxShadow: {
+            cozy: '0 8px 24px -6px rgba(62, 47, 38, 0.07), 0 2px 6px -1px rgba(62, 47, 38, 0.04)',
+            float: '0 12px 28px -6px rgba(200, 125, 85, 0.35)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background-color: #FAF6F0;
+      color: #3E2F26;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overscroll-behavior-y: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Subtle paper-grain texture feel */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(122, 104, 93, 0.06) 1px, transparent 0);
+      background-size: 20px 20px;
+      z-index: 0;
+    }
+
+    /* Safe Area Insets for Mobile Home Screen Mode */
+    .safe-top {
+      padding-top: max(1.15rem, env(safe-area-inset-top));
+    }
+
+    .safe-bottom-nav {
+      padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+    }
+
+    .main-scroll-area {
+      padding-bottom: calc(6.25rem + env(safe-area-inset-bottom));
+    }
+
+    /* Smooth Tab Fade */
+    .tab-view {
+      display: none;
+      animation: fadeSlideUp 0.24s ease-out forwards;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Custom Scrollbar for horizontal chips */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Custom Date & Number Inputs */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0.65;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-terracotta/20 selection:text-espresso">
+
+  <!-- App Container (Centered mobile column on desktop, full width on mobile) -->
+  <div class="relative z-10 max-w-md mx-auto min-h-screen flex flex-col">
+
+    <!-- Top Cozy Header -->
+    <header class="safe-top px-5 pb-3 flex items-center justify-between">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-linen border border-sandBorder text-[11px] font-semibold tracking-wide text-mocha uppercase mb-1">
+          <span>🎮</span>
+          <span>Mission PS5</span>
+        </div>
+        <h1 class="font-serif text-xl font-bold text-espresso tracking-tight leading-tight">
+          GTA VI – <span id="headerTargetLabel" class="text-terracotta">₹50,000</span> Challenge
+        </h1>
+      </div>
+
+      <!-- Target Goal Edit Button -->
+      <button
+        id="openGoalModalBtn"
+        aria-label="Edit Savings Goal"
+        class="p-2.5 rounded-2xl bg-oatmeal border border-sandBorder shadow-cozy text-mocha hover:text-espresso active:scale-95 transition"
+        title="Adjust Goal Target"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="flex-1 px-5 main-scroll-area space-y-5">
+
+      <!-- ========================================================= -->
+      <!-- TAB 1: HOME TAB                                           -->
+      <!-- ========================================================= -->
+      <section id="tab-home" class="tab-view active space-y-5">
+        <p class="text-xs text-mocha italic -mt-1">
+          “Buy your PS5 with discipline, not impulse.”
+        </p>
+
+        <!-- Hero Progress Card -->
+        <div class="bg-oatmeal border border-sandBorder rounded-3xl p-5 shadow-cozy relative overflow-hidden">
+          <!-- Warm Decorative Corner Accent -->
+          <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-terracotta/10 pointer-events-none"></div>
+
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-mocha">Saved So Far</span>
+              <div id="homeSavedAmount" class="font-serif text-3xl sm:text-4xl font-bold text-espresso mt-0.5">
+                ₹0
+              </div>
+            </div>
+            <div class="text-right">
+              <span id="homePercentBadge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-sageSoft text-sage">
+                0%
+              </span>
+              <p id="homeTargetSubtext" class="text-[11px] text-mocha mt-1">of ₹50,000</p>
+            </div>
+          </div>
+
+          <!-- Cozy Progress Bar -->
+          <div class="w-full h-4 bg-linen rounded-full p-1 border border-sandBorder/70 overflow-hidden">
+            <div
+              id="homeProgressBar"
+              class="h-full rounded-full bg-gradient-to-r from-terracotta to-sage transition-all duration-500 ease-out"
+              style="width: 0%;"
+            ></div>
+          </div>
+
+          <!-- Sub-metrics Row -->
+          <div class="grid grid-cols-2 gap-3 mt-4 pt-3.5 border-t border-sandBorder/80">
+            <div>
+              <span class="text-[11px] text-mocha block">Remaining</span>
+              <span id="homeRemainingAmount" class="text-sm font-bold text-espresso">₹50,000</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[11px] text-mocha block">Sunday Review</span>
+              <span id="sundayStatusBadge" class="text-xs font-semibold text-terracotta">Due every Sunday ☕</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Action CTA -->
+        <button
+          id="openAddModalHeroBtn"
+          class="w-full py-4 px-5 rounded-2xl bg-terracotta hover:bg-terracottaDark active:scale-[0.99] text-white font-semibold text-sm shadow-float flex items-center justify-center gap-2.5 transition"
+        >
+          <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-base font-bold">+</span>
+          <span>Log Resisted Impulse / Deposit</span>
+        </button>
+
+        <!-- My Rules & Mindset Card (Collapsible) -->
+        <div class="bg-oatmeal border border-sandBorder rounded-3xl p-5 shadow-cozy">
+          <button
+            id="toggleRulesBtn"
+            class="w-full flex items-center justify-between text-left"
+            aria-expanded="true"
+          >
+            <div class="flex items-center gap-2">
+              <span class="text-base">🌿</span>
+              <h2 class="font-serif text-base font-bold text-espresso">My Rules & Mindset</h2>
+            </div>
+            <svg id="rulesChevron" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-mocha transition-transform duration-200 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div id="rulesContent" class="mt-3.5 space-y-2.5 text-xs text-espresso/90">
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2.5">
+                <span class="text-terracotta font-bold mt-0.5">•</span>
+                <span>Resist junk food & shopping → transfer the money saved.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-terracotta font-bold mt-0.5">•</span>
+                <span>Apply the <strong>24-hour rule</strong> before non-essential purchases.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-terracotta font-bold mt-0.5">•</span>
+                <span>Keep PS5 savings separate & untouchable.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-terracotta font-bold mt-0.5">•</span>
+                <span>Review your progress every Sunday.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-terracotta font-bold mt-0.5">•</span>
+                <span>Never compromise on nutrition or essentials.</span>
+              </li>
+            </ul>
+
+            <div class="mt-3 pt-3 border-t border-sandBorder/70 flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded-full bg-linen text-[11px] font-medium text-mocha">Health over cravings</span>
+              <span class="px-2.5 py-1 rounded-full bg-linen text-[11px] font-medium text-mocha">Needs over wants</span>
+              <span class="px-2.5 py-1 rounded-full bg-linen text-[11px] font-medium text-mocha">Consistency over perfection</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Entries Preview -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h3 class="font-serif text-base font-bold text-espresso">Recent Wins</h3>
+            <button
+              onclick="switchTab('history')"
+              class="text-xs font-semibold text-terracotta hover:underline"
+            >
+              See all →
+            </button>
+          </div>
+
+          <div id="homeRecentList" class="space-y-2.5">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <p class="text-center text-[11px] text-mocha pt-1 pb-2">
+          Your first PS5 should feel earned. 💪
+        </p>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- TAB 2: HISTORY / TRANSACTIONS TAB                         -->
+      <!-- ========================================================= -->
+      <section id="tab-history" class="tab-view space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-espresso">Savings Log</h2>
+            <p class="text-xs text-mocha">Every resisted craving counts</p>
+          </div>
+          <span id="historyCountBadge" class="px-3 py-1 rounded-full bg-linen border border-sandBorder text-xs font-bold text-espresso">
+            0 entries
+          </span>
+        </div>
+
+        <!-- Search & Sort Controls -->
+        <div class="flex gap-2">
+          <div class="relative flex-1">
+            <input
+              type="text"
+              id="historySearchInput"
+              placeholder="Search entries (e.g., Pizza, Payday)..."
+              class="w-full pl-9 pr-3 py-2.5 rounded-2xl bg-oatmeal border border-sandBorder text-xs text-espresso placeholder-mocha/60 focus:outline-none focus:border-terracotta"
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-mocha absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <select
+            id="historySortSelect"
+            aria-label="Sort entries"
+            class="px-3 py-2.5 rounded-2xl bg-oatmeal border border-sandBorder text-xs font-medium text-espresso focus:outline-none focus:border-terracotta"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="highest">Highest ₹</option>
+          </select>
+        </div>
+
+        <!-- Full Transaction List -->
+        <div id="historyFullList" class="space-y-2.5">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- TAB 3: FINANCES & ANALYTICS TAB                           -->
+      <!-- ========================================================= -->
+      <section id="tab-finances" class="tab-view space-y-5">
+        <div>
+          <h2 class="font-serif text-xl font-bold text-espresso">Financial Overview</h2>
+          <p class="text-xs text-mocha">Accumulation curve & milestone pace</p>
+        </div>
+
+        <!-- 2x2 KPI Summary Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-oatmeal border border-sandBorder rounded-2xl p-4 shadow-cozy">
+            <span class="text-[11px] font-medium text-mocha block">Accumulated</span>
+            <span id="finTotalSaved" class="font-serif text-xl font-bold text-sage mt-1 block">₹0</span>
+          </div>
+
+          <div class="bg-oatmeal border border-sandBorder rounded-2xl p-4 shadow-cozy">
+            <span class="text-[11px] font-medium text-mocha block">Amount Left</span>
+            <span id="finAmountLeft" class="font-serif text-xl font-bold text-espresso mt-1 block">₹50,000</span>
+          </div>
+
+          <div class="bg-oatmeal border border-sandBorder rounded-2xl p-4 shadow-cozy">
+            <span class="text-[11px] font-medium text-mocha block">Avg / Deposit</span>
+            <span id="finAvgDeposit" class="font-serif text-lg font-bold text-terracotta mt-1 block">₹0</span>
+          </div>
+
+          <div class="bg-oatmeal border border-sandBorder rounded-2xl p-4 shadow-cozy">
+            <span class="text-[11px] font-medium text-mocha block">Total Deposits</span>
+            <span id="finTotalCount" class="font-serif text-lg font-bold text-espresso mt-1 block">0</span>
+          </div>
+        </div>
+
+        <!-- Cumulative Growth Chart Card -->
+        <div class="bg-oatmeal border border-sandBorder rounded-3xl p-4 shadow-cozy">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="font-serif text-sm font-bold text-espresso">Cumulative Savings Curve</h3>
+              <p class="text-[11px] text-mocha">Growth from your first logged date</p>
+            </div>
+            <span id="finCompletionPct" class="px-2.5 py-0.5 rounded-full bg-sageSoft text-sage text-[11px] font-bold">
+              0%
+            </span>
+          </div>
+
+          <div class="relative w-full h-56">
+            <canvas id="savingsChart"></canvas>
+            <div id="chartEmptyOverlay" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center px-4 bg-oatmeal/90 rounded-2xl">
+              <span class="text-2xl mb-1">📈</span>
+              <p class="text-xs font-medium text-espresso">No data points yet</p>
+              <p class="text-[11px] text-mocha mt-0.5">Log your first saved impulse to watch your curve grow.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pace & Baseline Comparison Card -->
+        <div class="bg-oatmeal border border-sandBorder rounded-3xl p-5 shadow-cozy space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="text-base">⏳</span>
+            <h3 class="font-serif text-base font-bold text-espresso">Pace & Timeline Estimate</h3>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-linen/80 border border-sandBorder/80 space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="text-mocha">Current Monthly Pace:</span>
+              <span id="finMonthlyPace" class="font-bold text-espresso">₹0 / mo</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-mocha">Projected Completion:</span>
+              <span id="finEstCompletion" class="font-bold text-terracotta">Start logging to calculate</span>
+            </div>
+          </div>
+
+          <!-- Reference Milestones Table -->
+          <div class="pt-1">
+            <p class="text-[11px] font-semibold text-mocha uppercase tracking-wider mb-2">Reference Pace Guide (₹50k Target)</p>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-espresso/90">
+              <div class="flex justify-between py-1 border-b border-sandBorder/60">
+                <span>₹2,000/mo</span><span class="text-mocha font-medium">25 mos</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-sandBorder/60 font-semibold text-terracotta">
+                <span>₹3,000/mo</span><span>17 mos</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-sandBorder/60">
+                <span>₹5,000/mo</span><span class="text-mocha font-medium">10 mos</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-sandBorder/60">
+                <span>₹7,000/mo</span><span class="text-mocha font-medium">8 mos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backup & Device Data Management -->
+        <div class="bg-oatmeal border border-sandBorder rounded-3xl p-5 shadow-cozy space-y-3">
+          <h3 class="font-serif text-sm font-bold text-espresso">Data & Backup</h3>
+          <p class="text-[11px] text-mocha leading-relaxed">
+            Your progress is saved offline on this device. Export a JSON backup anytime before clearing browser data.
+          </p>
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <button
+              id="exportJsonBtn"
+              class="py-2.5 px-3 rounded-xl bg-linen hover:bg-sandBorder/60 border border-sandBorder text-xs font-semibold text-espresso transition flex items-center justify-center gap-1.5"
+            >
+              <span>⬇️</span> Export Backup
+            </button>
+            <label
+              class="py-2.5 px-3 rounded-xl bg-linen hover:bg-sandBorder/60 border border-sandBorder text-xs font-semibold text-espresso transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>⬆️</span> Restore JSON
+              <input type="file" id="importJsonInput" accept=".json" class="hidden" />
+            </label>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- FIXED BOTTOM NAVIGATION TAB BAR                           -->
+    <!-- ========================================================= -->
+    <nav class="fixed bottom-0 left-0 right-0 z-30 bg-oatmeal/95 backdrop-blur-md border-t border-sandBorder safe-bottom-nav">
+      <div class="max-w-md mx-auto px-4 pt-2 flex items-center justify-around">
+        <!-- Tab 1: Home -->
+        <button
+          data-tab="home"
+          onclick="switchTab('home')"
+          class="nav-btn flex flex-col items-center gap-1 py-1.5 px-5 rounded-2xl text-terracotta transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+            <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+          </svg>
+          <span class="text-[11px] font-bold">Home</span>
+        </button>
+
+        <!-- Tab 2: History / Transactions -->
+        <button
+          data-tab="history"
+          onclick="switchTab('history')"
+          class="nav-btn flex flex-col items-center gap-1 py-1.5 px-5 rounded-2xl text-mocha hover:text-espresso transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          <span class="text-[11px] font-semibold">History</span>
+        </button>
+
+        <!-- Tab 3: Finances -->
+        <button
+          data-tab="finances"
+          onclick="switchTab('finances')"
+          class="nav-btn flex flex-col items-center gap-1 py-1.5 px-5 rounded-2xl text-mocha hover:text-espresso transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+          </svg>
+          <span class="text-[11px] font-semibold">Finances</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 1: ADD / EDIT TRANSACTION MODAL                     -->
+  <!-- ========================================================= -->
+  <div id="txModal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-espresso/40 backdrop-blur-xs p-0 sm:p-4">
+    <div class="w-full max-w-md bg-oatmeal border-t sm:border border-sandBorder rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl space-y-4 animate-[fadeSlideUp_0.2s_ease-out]">
+      <div class="flex items-center justify-between">
+        <h3 id="txModalTitle" class="font-serif text-lg font-bold text-espresso">Log Saved Money</h3>
+        <button id="closeTxModalBtn" class="p-1.5 rounded-full bg-linen text-mocha hover:text-espresso">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Impulse Presets -->
+      <div>
+        <span class="text-[11px] font-semibold text-mocha uppercase tracking-wider block mb-2">Quick Tap Presets</span>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          <button type="button" onclick="applyPreset('Skipped Burger / Pizza', 250)" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            🍕 Pizza/Burger ₹250
+          </button>
+          <button type="button" onclick="applyPreset('Skipped Cold Drink', 100)" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            🥤 Cold Drink ₹100
+          </button>
+          <button type="button" onclick="applyPreset('Skipped Street Food', 100)" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            🍜 Street Food ₹100
+          </button>
+          <button type="button" onclick="applyPreset('Skipped Snacks', 50)" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            🍿 Snacks ₹50
+          </button>
+          <button type="button" onclick="applyPreset('Resisted Shopping Impulse', '')" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            🛍️ Unnecessary Shopping
+          </button>
+          <button type="button" onclick="applyPreset('Monthly Discipline Deposit', 3000)" class="shrink-0 px-3 py-1.5 rounded-full bg-linen hover:bg-terracotta/15 border border-sandBorder text-xs font-medium text-espresso transition">
+            💰 Monthly ₹3,000
+          </button>
+        </div>
+      </div>
+
+      <form id="txForm" class="space-y-3.5">
+        <input type="hidden" id="txEditId" value="" />
+
+        <div>
+          <label for="txNameInput" class="block text-xs font-semibold text-espresso mb-1">What did you resist or deposit?</label>
+          <input
+            type="text"
+            id="txNameInput"
+            required
+            placeholder="e.g., Skipped Zomato order, 24-hr rule..."
+            class="w-full px-3.5 py-3 rounded-2xl bg-parchment border border-sandBorder text-sm text-espresso placeholder-mocha/50 focus:outline-none focus:border-terracotta"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="txAmountInput" class="block text-xs font-semibold text-espresso mb-1">Amount (₹)</label>
+            <input
+              type="number"
+              id="txAmountInput"
+              required
+              min="1"
+              step="any"
+              placeholder="250"
+              class="w-full px-3.5 py-3 rounded-2xl bg-parchment border border-sandBorder text-sm font-bold text-espresso placeholder-mocha/50 focus:outline-none focus:border-terracotta"
+            />
+          </div>
+
+          <div>
+            <label for="txDateInput" class="block text-xs font-semibold text-espresso mb-1">Date</label>
+            <input
+              type="date"
+              id="txDateInput"
+              required
+              class="w-full px-3.5 py-3 rounded-2xl bg-parchment border border-sandBorder text-sm text-espresso focus:outline-none focus:border-terracotta"
+            />
+          </div>
+        </div>
+
+        <div class="pt-2 flex gap-2.5">
+          <button
+            type="submit"
+            class="flex-1 py-3.5 px-4 rounded-2xl bg-terracotta hover:bg-terracottaDark text-white font-semibold text-sm shadow-float transition"
+          >
+            Save to PS5 Fund
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2: EDIT TARGET GOAL MODAL                           -->
+  <!-- ========================================================= -->
+  <div id="goalModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-espresso/40 backdrop-blur-xs p-4">
+    <div class="w-full max-w-sm bg-oatmeal border border-sandBorder rounded-3xl p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-serif text-lg font-bold text-espresso">Challenge Target & App Icon</h3>
+        <button id="closeGoalModalBtn" class="p-1.5 rounded-full bg-linen text-mocha hover:text-espresso">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Home Screen App Icon Preview -->
+      <div class="flex items-center gap-3.5 p-3 rounded-2xl bg-linen/80 border border-sandBorder">
+        <img id="settingsIconPreview" alt="PS5 Fund Home Screen App Icon" class="w-14 h-14 rounded-2xl shadow-cozy shrink-0 border border-sandBorder" />
+        <div>
+          <p class="text-xs font-bold text-espresso">PS5 Fund • Home Screen Icon</p>
+          <p class="text-[11px] text-mocha leading-snug mt-0.5">
+            Tap your browser menu → <strong>Add to Home Screen</strong> to install with this cozy icon.
+          </p>
+        </div>
+      </div>
+
+      <p class="text-xs text-mocha">
+        Default is ₹50,000 for the console. You can adjust it anytime (e.g. ₹56,000 if bundling GTA VI).
+      </p>
+      <form id="goalForm" class="space-y-3.5">
+        <div>
+          <label for="goalAmountInput" class="block text-xs font-semibold text-espresso mb-1">Target Amount (₹)</label>
+          <input
+            type="number"
+            id="goalAmountInput"
+            required
+            min="100"
+            step="100"
+            class="w-full px-3.5 py-3 rounded-2xl bg-parchment border border-sandBorder text-base font-bold text-espresso focus:outline-none focus:border-terracotta"
+          />
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="document.getElementById('goalAmountInput').value = 50000" class="px-3 py-1.5 rounded-xl bg-linen text-xs font-semibold text-espresso border border-sandBorder">
+            ₹50,000 (PS5)
+          </button>
+          <button type="button" onclick="document.getElementById('goalAmountInput').value = 56000" class="px-3 py-1.5 rounded-xl bg-linen text-xs font-semibold text-espresso border border-sandBorder">
+            ₹56,000 (PS5 + GTA VI)
+          </button>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-2xl bg-terracotta text-white font-semibold text-sm">
+          Update Target
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 3: CUSTOM DELETE CONFIRMATION MODAL (No confirm())   -->
+  <!-- ========================================================= -->
+  <div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-espresso/40 backdrop-blur-xs p-4">
+    <div class="w-full max-w-xs bg-oatmeal border border-sandBorder rounded-3xl p-6 shadow-2xl space-y-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-terracotta/15 text-terracotta flex items-center justify-center mx-auto text-xl">
+        🗑️
+      </div>
+      <div>
+        <h3 class="font-serif text-base font-bold text-espresso">Remove this entry?</h3>
+        <p id="deleteConfirmText" class="text-xs text-mocha mt-1">This will subtract the amount from your PS5 savings total.</p>
+      </div>
+      <div class="flex gap-2.5 pt-1">
+        <button id="cancelDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-linen text-xs font-semibold text-espresso border border-sandBorder">
+          Cancel
+        </button>
+        <button id="confirmDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-terracotta text-xs font-semibold text-white">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cozy Toast Notification -->
+  <div id="toastBanner" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-[-10px]">
+    <div class="px-4 py-2.5 rounded-full bg-espresso text-oatmeal text-xs font-semibold shadow-lg flex items-center gap-2">
+      <span>✨</span>
+      <span id="toastMessage">Saved!</span>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- APPLICATION LOGIC (LocalStorage, UI Rendering, Chart.js)  -->
+  <!-- ========================================================= -->
+  <script>
+    // Storage Keys
+    const STORAGE_KEY_TX = 'ps5_challenge_transactions_v1';
+    const STORAGE_KEY_GOAL = 'ps5_challenge_goal_v1';
+
+    // App State
+    let transactions = [];
+    let targetGoal = 50000;
+    let savingsChartInstance = null;
+    let pendingDeleteId = null;
+
+    // Indian Rupee Formatter (e.g., ₹50,000)
+    const inrFormatter = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    });
+
+    function formatINR(amount) {
+      return inrFormatter.format(Math.round(amount || 0));
+    }
+
+    // Format YYYY-MM-DD into cozy readable date (e.g., "13 Nov 2026")
+    function formatDisplayDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      return dateObj.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    // Get today's local date as YYYY-MM-DD
+    function getTodayISO() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    // Show Cozy Toast
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastMessage');
+      text.textContent = msg;
+      banner.classList.remove('opacity-0', 'translate-y-[-10px]');
+      banner.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('opacity-0', 'translate-y-[-10px]');
+        banner.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    // Load Data from localStorage
+    function loadState() {
+      try {
+        const rawTx = localStorage.getItem(STORAGE_KEY_TX);
+        const rawGoal = localStorage.getItem(STORAGE_KEY_GOAL);
+        transactions = rawTx ? JSON.parse(rawTx) : [];
+        if (!Array.isArray(transactions)) transactions = [];
+        targetGoal = rawGoal ? Number(rawGoal) : 50000;
+        if (!targetGoal || targetGoal <= 0) targetGoal = 50000;
+      } catch (e) {
+        console.error('Error reading localStorage:', e);
+        transactions = [];
+        targetGoal = 50000;
+      }
+    }
+
+    // Persist Data to localStorage
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+        localStorage.setItem(STORAGE_KEY_GOAL, String(targetGoal));
+      } catch (e) {
+        console.error('Error saving to localStorage:', e);
+        showToast('Storage full — please export backup');
+      }
+    }
+
+    // Tab Navigation Switching
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      const activeSection = document.getElementById(`tab-${tabName}`);
+      if (activeSection) activeSection.classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isTarget = btn.getAttribute('data-tab') === tabName;
+        btn.classList.toggle('text-terracotta', isTarget);
+        btn.classList.toggle('text-mocha', !isTarget);
+      });
+
+      if (tabName === 'finances') {
+        renderFinancesTab();
+      }
+    }
+
+    // Render Single Transaction Card HTML
+    function createTransactionCardHTML(tx, allowActions = true) {
+      const actionsHTML = allowActions
+        ? `
+          <div class="flex items-center gap-1 ml-2">
+            <button
+              onclick="openEditModal('${tx.id}')"
+              aria-label="Edit entry"
+              class="p-1.5 rounded-xl text-mocha hover:text-espresso hover:bg-linen transition"
+              title="Edit"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            <button
+              onclick="promptDelete('${tx.id}')"
+              aria-label="Delete entry"
+              class="p-1.5 rounded-xl text-mocha hover:text-terracotta hover:bg-linen transition"
+              title="Delete"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+        `
+        : '';
+
+      return `
+        <div class="bg-oatmeal border border-sandBorder rounded-2xl p-3.5 shadow-cozy flex items-center justify-between">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-2xl bg-linen border border-sandBorder flex items-center justify-center shrink-0 text-base">
+              ☕
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-espresso truncate">${escapeHTML(tx.name)}</p>
+              <p class="text-[11px] text-mocha mt-0.5">${formatDisplayDate(tx.date)}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center shrink-0">
+            <span class="text-sm font-bold text-sage">+${formatINR(tx.amount)}</span>
+            ${actionsHTML}
+          </div>
+        </div>
+      `;
+    }
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Master UI Render
+    function renderAll() {
+      const totalSaved = transactions.reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+      const remaining = Math.max(0, targetGoal - totalSaved);
+      const pct = Math.min(100, (totalSaved / targetGoal) * 100);
+
+      // Update Header & Home Tab
+      document.getElementById('headerTargetLabel').textContent = formatINR(targetGoal);
+      document.getElementById('homeSavedAmount').textContent = formatINR(totalSaved);
+      document.getElementById('homeTargetSubtext').textContent = `of ${formatINR(targetGoal)}`;
+      document.getElementById('homePercentBadge').textContent = `${pct.toFixed(1)}%`;
+      document.getElementById('homeProgressBar').style.width = `${pct}%`;
+      document.getElementById('homeRemainingAmount').textContent = remaining === 0 ? 'Goal Reached! 🎉' : formatINR(remaining);
+
+      // Sunday reminder highlight if today is Sunday
+      const isSunday = new Date().getDay() === 0;
+      const sundayBadge = document.getElementById('sundayStatusBadge');
+      if (isSunday) {
+        sundayBadge.textContent = 'Today is Sunday! Review day ✨';
+        sundayBadge.classList.add('text-sage');
+      } else {
+        sundayBadge.textContent = 'Review every Sunday ☕';
+        sundayBadge.classList.remove('text-sage');
+      }
+
+      // Sort newest first for recent preview
+      const sortedNewest = [...transactions].sort((a, b) => {
+        if (b.date !== a.date) return b.date.localeCompare(a.date);
+        return (b.createdAt || 0) - (a.createdAt || 0);
+      });
+
+      // Home Recent 3 Preview
+      const homeRecentEl = document.getElementById('homeRecentList');
+      if (sortedNewest.length === 0) {
+        homeRecentEl.innerHTML = `
+          <div class="bg-oatmeal/70 border border-dashed border-sandBorder rounded-2xl p-6 text-center">
+            <p class="text-xs font-semibold text-espresso">No deposits logged yet</p>
+            <p class="text-[11px] text-mocha mt-1">Skipped a snack or cold drink today? Tap the button above to bank it!</p>
+          </div>
+        `;
+      } else {
+        homeRecentEl.innerHTML = sortedNewest
+          .slice(0, 3)
+          .map(tx => createTransactionCardHTML(tx, false))
+          .join('');
+      }
+
+      // Render History Tab
+      renderHistoryTab();
+
+      // Render Finances Tab
+      renderFinancesTab();
+    }
+
+    // Render History Tab with Search & Sort
+    function renderHistoryTab() {
+      const query = (document.getElementById('historySearchInput').value || '').trim().toLowerCase();
+      const sortMode = document.getElementById('historySortSelect').value;
+
+      let filtered = transactions.filter(tx =>
+        tx.name.toLowerCase().includes(query) ||
+        formatDisplayDate(tx.date).toLowerCase().includes(query)
+      );
+
+      filtered.sort((a, b) => {
+        if (sortMode === 'oldest') {
+          return a.date.localeCompare(b.date) || (a.createdAt || 0) - (b.createdAt || 0);
+        }
+        if (sortMode === 'highest') {
+          return Number(b.amount) - Number(a.amount);
+        }
+        return b.date.localeCompare(a.date) || (b.createdAt || 0) - (a.createdAt || 0);
+      });
+
+      document.getElementById('historyCountBadge').textContent =
+        `${transactions.length} ${transactions.length === 1 ? 'entry' : 'entries'}`;
+
+      const listEl = document.getElementById('historyFullList');
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="bg-oatmeal border border-sandBorder rounded-3xl p-8 text-center shadow-cozy">
+            <span class="text-3xl block mb-2">📔</span>
+            <p class="font-serif text-base font-bold text-espresso">
+              ${transactions.length === 0 ? 'Your journal is empty' : 'No matching entries'}
+            </p>
+            <p class="text-xs text-mocha mt-1">
+              ${transactions.length === 0 ? 'Log your first resisted impulse from the Home tab.' : 'Try clearing your search filter.'}
+            </p>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = filtered.map(tx => createTransactionCardHTML(tx, true)).join('');
+      }
+    }
+
+    // Render Finances Tab & Cumulative Growth Chart
+    function renderFinancesTab() {
+      const totalSaved = transactions.reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+      const remaining = Math.max(0, targetGoal - totalSaved);
+      const count = transactions.length;
+      const avgDeposit = count > 0 ? totalSaved / count : 0;
+      const pct = Math.min(100, (totalSaved / targetGoal) * 100);
+
+      document.getElementById('finTotalSaved').textContent = formatINR(totalSaved);
+      document.getElementById('finAmountLeft').textContent = formatINR(remaining);
+      document.getElementById('finAvgDeposit').textContent = formatINR(avgDeposit);
+      document.getElementById('finTotalCount').textContent = String(count);
+      document.getElementById('finCompletionPct').textContent = `${pct.toFixed(1)}%`;
+
+      // Sort chronologically (oldest to newest) for cumulative growth curve
+      const chronological = [...transactions].sort((a, b) => a.date.localeCompare(b.date));
+
+      // Pace & Projected Completion Calculation
+      const paceEl = document.getElementById('finMonthlyPace');
+      const estEl = document.getElementById('finEstCompletion');
+
+      if (chronological.length === 0) {
+        paceEl.textContent = '₹0 / mo';
+        estEl.textContent = 'Log first entry to estimate';
+      } else if (remaining === 0) {
+        paceEl.textContent = 'Target Complete!';
+        estEl.textContent = 'Ready for your PS5 🎮';
+      } else {
+        const firstDate = new Date(chronological[0].date);
+        const today = new Date();
+        const daysElapsed = Math.max(1, Math.round((today - firstDate) / (1000 * 60 * 60 * 24)));
+        // Calculate effective monthly rate (minimum 1 month window so day-1 deposits don't inflate wildly)
+        const effectiveMonths = Math.max(1, daysElapsed / 30.44);
+        const monthlyRate = totalSaved / effectiveMonths;
+        paceEl.textContent = `${formatINR(monthlyRate)} / mo`;
+
+        const monthsLeft = Math.ceil(remaining / Math.max(100, monthlyRate));
+        const estDate = new Date();
+        estDate.setMonth(estDate.getMonth() + monthsLeft);
+        const estFormatted = estDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+        estEl.textContent = `${estFormatted} (~${monthsLeft} mos)`;
+      }
+
+      // Group cumulative totals by date so multiple entries on the same day plot cleanly
+      const dailyMap = new Map();
+      chronological.forEach(tx => {
+        dailyMap.set(tx.date, (dailyMap.get(tx.date) || 0) + Number(tx.amount || 0));
+      });
+
+      const labels = [];
+      const cumulativeData = [];
+      let runningTotal = 0;
+
+      dailyMap.forEach((dayAmount, dateStr) => {
+        runningTotal += dayAmount;
+        labels.push(formatDisplayDate(dateStr));
+        cumulativeData.push(runningTotal);
+      });
+
+      const overlay = document.getElementById('chartEmptyOverlay');
+      if (labels.length === 0) {
+        overlay.classList.remove('hidden');
+      } else {
+        overlay.classList.add('hidden');
+      }
+
+      const ctx = document.getElementById('savingsChart').getContext('2d');
+      if (savingsChartInstance) {
+        savingsChartInstance.destroy();
+      }
+
+      // Warm gradient fill under curve
+      const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+      gradient.addColorStop(0, 'rgba(200, 125, 85, 0.32)');
+      gradient.addColorStop(1, 'rgba(200, 125, 85, 0.01)');
+
+      savingsChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels.length ? labels : ['Start'],
+          datasets: [
+            {
+              label: 'Accumulated (₹)',
+              data: cumulativeData.length ? cumulativeData : [0],
+              borderColor: '#C87D55',
+              backgroundColor: gradient,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#FFFDF9',
+              pointBorderColor: '#C87D55',
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: true,
+              tension: 0.32
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#3E2F26',
+              titleColor: '#FAF6F0',
+              bodyColor: '#FFFDF9',
+              padding: 10,
+              cornerRadius: 12,
+              displayColors: false,
+              callbacks: {
+                label: (ctx) => `Saved: ${formatINR(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: '#7A685D',
+                font: { size: 10, family: 'Plus Jakarta Sans' },
+                maxTicksLimit: 5
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(230, 221, 208, 0.6)',
+                borderDash: [4, 4]
+              },
+              ticks: {
+                color: '#7A685D',
+                font: { size: 10, family: 'Plus Jakarta Sans' },
+                callback: (val) => val >= 1000 ? `₹${(val / 1000).toFixed(0)}k` : `₹${val}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Modal Controls: Add / Edit Transaction
+    const txModal = document.getElementById('txModal');
+    function openAddModal() {
+      document.getElementById('txModalTitle').textContent = 'Log Saved Money';
+      document.getElementById('txEditId').value = '';
+      document.getElementById('txNameInput').value = '';
+      document.getElementById('txAmountInput').value = '';
+      document.getElementById('txDateInput').value = getTodayISO();
+      txModal.classList.remove('hidden');
+      txModal.classList.add('flex');
+      setTimeout(() => document.getElementById('txNameInput').focus(), 80);
+    }
+
+    function openEditModal(id) {
+      const tx = transactions.find(item => item.id === id);
+      if (!tx) return;
+      document.getElementById('txModalTitle').textContent = 'Edit Entry';
+      document.getElementById('txEditId').value = tx.id;
+      document.getElementById('txNameInput').value = tx.name;
+      document.getElementById('txAmountInput').value = tx.amount;
+      document.getElementById('txDateInput').value = tx.date;
+      txModal.classList.remove('hidden');
+      txModal.classList.add('flex');
+    }
+
+    function closeTxModal() {
+      txModal.classList.add('hidden');
+      txModal.classList.remove('flex');
+    }
+
+    function applyPreset(name, amount) {
+      document.getElementById('txNameInput').value = name;
+      document.getElementById('txAmountInput').value = amount;
+      if (!document.getElementById('txDateInput').value) {
+        document.getElementById('txDateInput').value = getTodayISO();
+      }
+      if (amount === '') {
+        document.getElementById('txAmountInput').focus();
+      }
+    }
+
+    // Handle Add / Edit Submit
+    document.getElementById('txForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const editId = document.getElementById('txEditId').value;
+      const name = document.getElementById('txNameInput').value.trim();
+      const amount = Number(document.getElementById('txAmountInput').value);
+      const date = document.getElementById('txDateInput').value;
+
+      if (!name || isNaN(amount) || amount <= 0 || !date) {
+        showToast('Please enter valid details');
+        return;
+      }
+
+      if (editId) {
+        const idx = transactions.findIndex(t => t.id === editId);
+        if (idx !== -1) {
+          transactions[idx] = { ...transactions[idx], name, amount, date };
+          showToast('Entry updated');
+        }
+      } else {
+        transactions.push({
+          id: 'tx_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          name,
+          amount,
+          date,
+          createdAt: Date.now()
+        });
+        showToast(`+${formatINR(amount)} added to PS5 Fund!`);
+      }
+
+      saveState();
+      renderAll();
+      closeTxModal();
+    });
+
+    // Delete Confirmation Flow
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    function promptDelete(id) {
+      const tx = transactions.find(t => t.id === id);
+      if (!tx) return;
+      pendingDeleteId = id;
+      document.getElementById('deleteConfirmText').textContent =
+        `Remove "${tx.name}" (${formatINR(tx.amount)}) from your savings log?`;
+      deleteModal.classList.remove('hidden');
+      deleteModal.classList.add('flex');
+    }
+
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+      pendingDeleteId = null;
+      deleteModal.classList.add('hidden');
+      deleteModal.classList.remove('flex');
+    });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+      if (pendingDeleteId) {
+        transactions = transactions.filter(t => t.id !== pendingDeleteId);
+        saveState();
+        renderAll();
+        showToast('Entry removed');
+      }
+      pendingDeleteId = null;
+      deleteModal.classList.add('hidden');
+      deleteModal.classList.remove('flex');
+    });
+
+    // Goal Modal Controls
+    const goalModal = document.getElementById('goalModal');
+    document.getElementById('openGoalModalBtn').addEventListener('click', () => {
+      document.getElementById('goalAmountInput').value = targetGoal;
+      goalModal.classList.remove('hidden');
+      goalModal.classList.add('flex');
+    });
+
+    document.getElementById('closeGoalModalBtn').addEventListener('click', () => {
+      goalModal.classList.add('hidden');
+      goalModal.classList.remove('flex');
+    });
+
+    document.getElementById('goalForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = Number(document.getElementById('goalAmountInput').value);
+      if (val && val >= 100) {
+        targetGoal = val;
+        saveState();
+        renderAll();
+        showToast(`Goal updated to ${formatINR(targetGoal)}`);
+      }
+      goalModal.classList.add('hidden');
+      goalModal.classList.remove('flex');
+    });
+
+    // Collapsible Rules Card
+    document.getElementById('toggleRulesBtn').addEventListener('click', () => {
+      const content = document.getElementById('rulesContent');
+      const chevron = document.getElementById('rulesChevron');
+      const isHidden = content.classList.toggle('hidden');
+      chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // JSON Export & Restore
+    document.getElementById('exportJsonBtn').addEventListener('click', () => {
+      const payload = {
+        app: 'GTA-VI-PS5-Challenge',
+        exportedAt: new Date().toISOString(),
+        targetGoal,
+        transactions
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ps5-savings-backup-${getTodayISO()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Backup file downloaded');
+    });
+
+    document.getElementById('importJsonInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          if (Array.isArray(data.transactions)) {
+            transactions = data.transactions;
+            if (data.targetGoal && Number(data.targetGoal) > 0) {
+              targetGoal = Number(data.targetGoal);
+            }
+            saveState();
+            renderAll();
+            showToast('Backup restored successfully!');
+          } else {
+            showToast('Invalid backup file format');
+          }
+        } catch (err) {
+          showToast('Could not read JSON file');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    // Event Bindings
+    document.getElementById('openAddModalHeroBtn').addEventListener('click', openAddModal);
+    document.getElementById('closeTxModalBtn').addEventListener('click', closeTxModal);
+    document.getElementById('historySearchInput').addEventListener('input', renderHistoryTab);
+    document.getElementById('historySortSelect').addEventListener('change', renderHistoryTab);
+
+    // Close modals when tapping backdrop
+    [txModal, goalModal, deleteModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+      });
+    });
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.__COZY_APP_ICON_URL__) {
+        const previewImg = document.getElementById('settingsIconPreview');
+        if (previewImg) previewImg.src = window.__COZY_APP_ICON_URL__;
+      }
+      loadState();
+      renderAll();
+    });
+  </script>
+</body>
+</html>
